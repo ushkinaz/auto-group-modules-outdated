@@ -26,6 +26,7 @@ public class AutoGroupAction extends AnAction {
     private static final String[] APPLICATION_GROUP  = new String[]{"application"};
     private static final String[] API_GROUP          = new String[]{"libs", "api"};
     private static final String[] SERVICES_GROUP     = new String[]{"libs", "services"};
+    private static final String[] BOUNDARY_GROUP     = new String[]{"libs", "boundary"};
     private static final String[] BEANS_GROUP        = new String[]{"libs", "beans"};
     private static final String[] EXT_GROUP          = new String[]{"libs", "ext"};
     private static final String[] SUPPLEMENTAL_GROUP = new String[]{"supplemental"};
@@ -47,12 +48,15 @@ public class AutoGroupAction extends AnAction {
 
 
         groupMappings.put(".*-api", API_GROUP);
-        groupMappings.put(".*-services", SERVICES_GROUP);
+        groupMappings.put(".*-service", SERVICES_GROUP);
+        groupMappings.put(".*-boundary", BOUNDARY_GROUP);
         groupMappings.put(".*-beans", BEANS_GROUP);
+        groupMappings.put("beans", BEANS_GROUP);
         groupMappings.put(".*-ext", EXT_GROUP);
 
         groupMappings.put(".*\\.pom", SUPPLEMENTAL_GROUP);
         groupMappings.put("reports", SUPPLEMENTAL_GROUP);
+        groupMappings.put("update_scripts", SUPPLEMENTAL_GROUP);
         groupMappings.put("app\\.aggregator", SUPPLEMENTAL_GROUP);
 
         groupMappings.put(".*-aspect", ASPECT_GROUP);
@@ -68,14 +72,18 @@ public class AutoGroupAction extends AnAction {
                 ModifiableModuleModel modifiableModel = mm.getModifiableModel();
                 Module[] modules = modifiableModel.getModules();
                 for (Module module : modules) {
+                    boolean exactMatch = false;
                     for (Map.Entry<String, String[]> mapping : groupMappings.entrySet()) {
                         String moduleName = module.getName();
                         if (moduleName.matches(mapping.getKey())) {
+                            exactMatch = true;
                             modifiableModel.setModuleGroupPath(module, mapping.getValue());
                             break;
                         }
                     }
-                    modifiableModel.setModuleGroupPath(module, DEFAULT_GROUP);
+                    if (!exactMatch) {
+                        modifiableModel.setModuleGroupPath(module, DEFAULT_GROUP);
+                    }
                 }
                 modifiableModel.commit();
             }
