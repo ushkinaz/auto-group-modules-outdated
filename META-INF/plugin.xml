@@ -2,7 +2,7 @@
   <id>ru.agent.auto.AutoGroupAction</id>
   <name>Auto Group</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="dsidorenko@agent.ru" url="http://www.agent.ru">Agent.ru</vendor>
 
   <description><![CDATA[
       Automatically assign groups to modules, based on their names<br>
@@ -12,7 +12,6 @@
   <idea-version since-build="107.105"/>
 
   <actions>
-    <!-- Add your actions here -->
       <action id="autogroup" class="ru.agent.auto.AutoGroupAction" text="Auto Group Modules" description="Automatically assign groups to modules, based on their names">
           <add-to-group group-id="ToolsMenu" anchor="last"/>
       </action>
